@@ -25,6 +25,13 @@ const envSchema = z.object({
   WORKER_PRIVATE_KEY: z
     .string()
     .regex(/^0x[a-fA-F0-9]{64}$/, 'WORKER_PRIVATE_KEY must be a valid private key'),
+
+  // API Server (optional)
+  API_PORT: z.coerce.number().default(3001),
+  API_ENABLED: z
+    .string()
+    .transform((val) => val.toLowerCase() === 'true')
+    .default('true'),
 });
 
 export type Config = z.infer<typeof envSchema>;

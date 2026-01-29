@@ -4,6 +4,7 @@ import { JobDB } from './db.js';
 import { EventListener } from './listener.js';
 import { Submitter } from './submitter.js';
 import { createProofProvider } from './proof-provider.js';
+import { ApiServer } from './api.js';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -62,6 +63,13 @@ async function main(): Promise<void> {
     10000, // poll interval
   );
 
+  // Initialize API server
+  let apiServer: ApiServer | null = null;
+  if (config.API_ENABLED) {
+    apiServer = new ApiServer(db, config.API_PORT);
+    apiServer.start();
+  }
+
   // Start services
   await listener.start();
   await submitter.start();
@@ -71,6 +79,9 @@ async function main(): Promise<void> {
     console.log('\n[Worker] Shutting down...');
     await listener.stop();
     await submitter.stop();
+    if (apiServer) {
+      apiServer.stop();
+    }
     db.close();
     process.exit(0);
   };
