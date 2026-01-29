@@ -369,6 +369,70 @@ body {
   color: var(--text-secondary);
 }
 
+/* Leaderboard Table */
+.leaderboard-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.leaderboard-table th,
+.leaderboard-table td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.leaderboard-table th {
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+.leaderboard-table tr:hover {
+  background: var(--bg-card);
+}
+
+.leaderboard-table .rank {
+  width: 60px;
+  font-size: 1.25rem;
+}
+
+.leaderboard-table .miner-address {
+  font-family: monospace;
+}
+
+.leaderboard-table .work-units {
+  font-weight: 700;
+  color: var(--accent-primary);
+}
+
+/* Events List */
+.events-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.event-item {
+  background: var(--bg-card);
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.event-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.event-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+}
+
 /* Responsive */
 @media (max-width: 640px) {
   .container {
@@ -387,5 +451,14 @@ body {
 
   .stats-grid {
     grid-template-columns: 1fr;
+  }
+
+  .leaderboard-table {
+    font-size: 0.875rem;
+  }
+
+  .leaderboard-table th,
+  .leaderboard-table td {
+    padding: 0.5rem;
   }
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useWallet } from "../hooks/useWallet";
 import { useMining } from "../hooks/useMining";
 import { WalletConnect } from "../components/WalletConnect";
@@ -14,7 +15,12 @@ export default function Home() {
   return (
     <div className="container">
       <header className="header">
-        <h1>Minder Credit - Mining Demo</h1>
+        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+          <h1>Minder Credit - Mining Demo</h1>
+          <Link href="/scoreboard" className="btn btn-secondary btn-sm">
+            Scoreboard
+          </Link>
+        </div>
         <WalletConnect
           address={wallet.address}
           isConnected={wallet.isConnected}
