@@ -2,6 +2,8 @@ import { ethers } from 'ethers';
 import { config } from './config.js';
 import { JobDB } from './db.js';
 import { EventListener } from './listener.js';
+import { Submitter } from './submitter.js';
+import { createProofProvider } from './proof-provider.js';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -29,6 +31,19 @@ async function main(): Promise<void> {
   const sepoliaNetwork = await sepoliaProvider.getNetwork();
   console.log(`[Worker] Connected to Sepolia (chainId: ${sepoliaNetwork.chainId})`);
 
+  // Connect to USC
+  console.log('[Worker] Connecting to USC...');
+  const uscProvider = new ethers.WebSocketProvider(config.USC_RPC_WS);
+  const uscNetwork = await uscProvider.getNetwork();
+  console.log(`[Worker] Connected to USC (chainId: ${uscNetwork.chainId})`);
+
+  // Initialize wallet
+  const uscWallet = new ethers.Wallet(config.WORKER_PRIVATE_KEY);
+  console.log(`[Worker] Wallet address: ${uscWallet.address}`);
+
+  // Initialize proof provider
+  const proofProvider = createProofProvider('http');
+
   // Initialize event listener
   const listener = new EventListener(
     sepoliaProvider,
@@ -37,23 +52,31 @@ async function main(): Promise<void> {
     3, // confirmations
   );
 
-  // Start listening
+  // Initialize submitter
+  const submitter = new Submitter(
+    db,
+    proofProvider,
+    uscProvider,
+    uscWallet,
+    config.SOURCE_CHAIN_KEY_SEPOLIA,
+    10000, // poll interval
+  );
+
+  // Start services
   await listener.start();
+  await submitter.start();
 
   // Handle shutdown
-  process.on('SIGINT', async () => {
+  const shutdown = async () => {
     console.log('\n[Worker] Shutting down...');
     await listener.stop();
+    await submitter.stop();
     db.close();
     process.exit(0);
-  });
+  };
 
-  process.on('SIGTERM', async () => {
-    console.log('\n[Worker] Shutting down...');
-    await listener.stop();
-    db.close();
-    process.exit(0);
-  });
+  process.on('SIGINT', shutdown);
+  process.on('SIGTERM', shutdown);
 
   console.log('[Worker] Worker is running. Press Ctrl+C to stop.');
 
