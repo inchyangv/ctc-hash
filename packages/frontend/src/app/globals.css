@@ -332,6 +332,33 @@ body {
   font-weight: 500;
 }
 
+.timeline-item .status-detail {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+}
+
+/* Time Estimate */
+.time-estimate {
+  display: flex;
+  justify-content: space-between;
+  background: var(--bg-card);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+}
+
+.time-estimate .elapsed {
+  color: var(--text-secondary);
+}
+
+.time-estimate .remaining {
+  color: var(--accent-primary);
+  font-weight: 500;
+}
+
 /* Miner Stats */
 .miner-stats {
   margin-top: 1.5rem;
