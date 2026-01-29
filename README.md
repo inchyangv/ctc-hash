@@ -84,6 +84,26 @@ Copy the output address to `.env`:
 pnpm --filter worker dev
 ```
 
+### Worker (Docker)
+
+```bash
+# Build and run with docker-compose
+docker-compose up -d worker
+
+# View logs
+docker-compose logs -f worker
+
+# Stop
+docker-compose down
+```
+
+Or build manually:
+
+```bash
+docker build -t minder-credit-worker -f packages/worker/Dockerfile .
+docker run --env-file .env -v worker-data:/app/packages/worker/data minder-credit-worker
+```
+
 ### Frontend
 
 ```bash
