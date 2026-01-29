@@ -1,0 +1,21 @@
+{
+  "name": "@minder-credit/worker",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/index.ts",
+    "start": "node dist/index.js",
+    "test": "echo 'No tests yet'"
+  },
+  "dependencies": {
+    "ethers": "^6.9.0",
+    "better-sqlite3": "^9.4.0",
+    "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.8",
+    "tsx": "^4.7.0"
+  }
+}
