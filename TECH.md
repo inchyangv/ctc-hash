@@ -2,6 +2,8 @@
 
 > HashCredit is a decentralized lending protocol that tokenizes "Proof of Work" itself. By leveraging Creditcoin's Universal Smart Contract (USC) technology, HashCredit verifies Bitcoin mining revenues (hashrate) without physical collateral or centralized oracles. We aim to establish Creditcoin as the premier "Bitcoin L2" for financial liquidity in the mining sector.
 
+![Hashrate → Gateway → Credit vault (hero)](figures/tech/01.png)
+
 ## Table of contents
 
 - [Problem statement](#problem-statement)
@@ -16,11 +18,15 @@
 
 ### The "Rich Miner, Poor Cash" paradox
 
+![Rich Miner, Poor Cash paradox visualization](figures/tech/02.png)
+
 - **Capital inefficiency:** Bitcoin miners possess expensive hardware (ASICs) and generate consistent cash flow, but they suffer from liquidity crunches due to OPEX (electricity, maintenance).
 - **Collateral friction:** Traditional lenders require physical custody of ASICs or extensive off-chain due diligence, which is slow and geographically limited.
 - **Missing on-chain primitive:** While RWA (Real World Assets) is a trending narrative, "Future Hashrate" remains an untapped asset class in DeFi because it is difficult to verify on-chain in a trustless manner.
 
 ## Solution overview
+
+![Verified revenue stream → credit (RBF concept)](figures/tech/03.png)
 
 ### Trustless revenue-based financing (RBF)
 
@@ -28,6 +34,8 @@ HashCredit introduces a mechanism to underwrite loans based on a miner's verifie
 
 - **No bridging required:** We do not bridge BTC. We read the Bitcoin state directly via Creditcoin.
 - **Oracle-less verification:** Instead of relying on centralized price feeds (e.g., Chainlink), we utilize Creditcoin's Gateway Technology (SPV) to mathematically prove income.
+
+![No bridging / oracle-less: read-only Bitcoin state proof](figures/tech/04.png)
 
 ## Technical architecture
 
@@ -37,10 +45,14 @@ The architecture consists of three layers leveraging the Creditcoin 3.0 stack:
 Bitcoin Network (Source) -> Creditcoin Gateway (Bridge) -> USC Contracts (Logic)
 ```
 
+![3-layer architecture: Source (BTC) → Bridge (Gateway) → Logic (USC)](figures/tech/05.png)
+
 ### A. The source (Bitcoin network)
 
 - **Data points:** mining pool payout transactions (standard BTC transactions).
 - **Why pool payouts?** 99% of miners operate via pools (e.g., AntPool, Foundry). Validating "coinbase transactions" restricts the market to solo miners. We target the mass market by validating payout flows from known pool wallets.
+
+![Mining pool payout flow (known pool → miner wallets)](figures/tech/05.png)
 
 ### B. The bridge (Creditcoin Gateway)
 
@@ -53,6 +65,8 @@ Bitcoin Network (Source) -> Creditcoin Gateway (Bridge) -> USC Contracts (Logic)
 - **SPV verifier:** a library contract that verifies the Merkle proof against the attestor's block headers.
 
 ## Verification workflow ("deep tech")
+
+![3-phase workflow: Identity & binding → SPV ingestion → Scoring/LTV](figures/tech/06.png)
 
 How we turn "Bitcoin blocks" into "credit scores" without a middleman.
 
@@ -71,6 +85,8 @@ How we turn "Bitcoin blocks" into "credit scores" without a middleman.
 1. The USC fetches the block header stored by Creditcoin attestors.
 2. It computes the Merkle root using the submitted Merkle path.
 3. Logic: `assert(ComputedRoot == StoredBlockHeader.MerkleRoot)`
+
+![SPV verification close-up: header vs Merkle path inclusion proof](figures/tech/07.png)
 
 **Result:** the payout is cryptographically verified as valid without any third-party API.
 
@@ -127,7 +143,11 @@ contract HashCreditVerifier {
 }
 ```
 
+![submitProof flow: inputs → checks → parse → validate → update](figures/tech/08.png)
+
 ## Risk management
+
+![Risk summary: pool wallet rotation vs reorg acceptance depth](figures/tech/09.png)
 
 ### A. Pool centralization risk
 
@@ -140,6 +160,8 @@ contract HashCreditVerifier {
 - **Mitigation:** require a confirmation depth of 6 blocks (~1 hour) on the Bitcoin mainnet before accepting any SPV proof.
 
 ## Strategic fit for Creditcoin
+
+![Strategic flywheel: USC/Gateway → miner liquidity → TVL/tx growth → Bitcoin L2 positioning](figures/tech/10.png)
 
 Why this project?
 
