@@ -20,6 +20,9 @@ export default function Home() {
           <Link href="/scoreboard" className="btn btn-secondary btn-sm">
             Scoreboard
           </Link>
+          <Link href="/admin" className="btn btn-secondary btn-sm">
+            Admin
+          </Link>
         </div>
         <WalletConnect
           address={wallet.address}

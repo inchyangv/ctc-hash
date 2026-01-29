@@ -80,6 +80,27 @@ export const MINING_EVENT_ABI = [
     stateMutability: "nonpayable",
     type: "function",
   },
+  {
+    inputs: [{ name: "newChallenge", type: "bytes32" }],
+    name: "rotateChallenge",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [{ name: "newTarget", type: "uint256" }],
+    name: "setDifficulty",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "owner",
+    outputs: [{ name: "", type: "address" }],
+    stateMutability: "view",
+    type: "function",
+  },
 ] as const;
 
 // MiningCreditUSC.sol ABI (Creditcoin USC)
